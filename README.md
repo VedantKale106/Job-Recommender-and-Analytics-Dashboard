@@ -66,6 +66,22 @@ This project provides a comprehensive solution for job recommendations based on 
 
 -----
 
+## Screenshots
+
+<img width="1354" height="758" alt="Image" src="https://github.com/user-attachments/assets/af3ed983-d036-4eed-ab24-6d8de4280424" />
+
+<img width="1885" height="912" alt="Image" src="https://github.com/user-attachments/assets/bf7045e2-7812-41fd-8405-b376f80765d1" />
+
+<img width="1888" height="912" alt="Image" src="https://github.com/user-attachments/assets/5cb42fa3-bc16-4268-ae30-db99facee638" />
+
+<img width="1884" height="917" alt="Image" src="https://github.com/user-attachments/assets/7c6251a5-3530-42e5-ae57-b6b4cde9e321" />
+
+<img width="1883" height="921" alt="Image" src="https://github.com/user-attachments/assets/7753e0f2-00ed-4dfc-82c5-0dadd2e46427" />
+
+<img width="1879" height="919" alt="Image" src="https://github.com/user-attachments/assets/380a481c-aa71-4471-aaed-2feba12cc2f2" />
+
+-----
+
 ## Setup and Installation
 
 To run this project locally, follow these steps:
