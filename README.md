@@ -9,7 +9,7 @@ This project provides a comprehensive solution for job recommendations based on 
 ## Table of Contents
 
   - [Project Overview](##project-overview)
-  - [Features](https://www.google.com/search?q=%23features)
+  - [Features](##Features)
   - [Project Structure](https://www.google.com/search?q=%23project-structure)
   - [Setup and Installation](https://www.google.com/search?q=%23setup-and-installation)
   - [Usage](https://www.google.com/search?q=%23usage)
