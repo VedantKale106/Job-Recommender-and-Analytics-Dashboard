@@ -8,7 +8,7 @@ This project provides a comprehensive solution for job recommendations based on 
 
 ## Table of Contents
 
-  - [Project Overview](https://www.google.com/search?q=%23project-overview)
+  - [Project Overview](##project-overview)
   - [Features](https://www.google.com/search?q=%23features)
   - [Project Structure](https://www.google.com/search?q=%23project-structure)
   - [Setup and Installation](https://www.google.com/search?q=%23setup-and-installation)
@@ -16,7 +16,6 @@ This project provides a comprehensive solution for job recommendations based on 
   - [Power BI Dashboard](https://www.google.com/search?q=%23power-bi-dashboard)
   - [Data Source](https://www.google.com/search?q=%23data-source)
   - [Contributing](https://www.google.com/search?q=%23contributing)
-  - [License](https://www.google.com/search?q=%23license)
 
 -----
 
