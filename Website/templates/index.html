@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill-Based Job Recommender</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'slide-up': 'slideUp 0.3s ease-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12 animate-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                🎯 Skill-Based Job Recommender
+            </h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Discover the perfect job matches based on your skills. Enter your abilities and let our AI find the best opportunities for you.
+            </p>
+        </div>
+
+        <!-- Main Form -->
+        <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 animate-slide-up">
+            <form method="POST" id="skillsForm" class="space-y-6">
+                <!-- Skills Input -->
+                <div>
+                    <label for="skills" class="block text-sm font-semibold text-gray-700 mb-3">
+                        Your Skills
+                    </label>
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="skills"
+                            name="skills" 
+                            placeholder="e.g. Python, SQL, Machine Learning, Data Analysis"
+                            required
+                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-colors duration-200 text-gray-700"
+                            autocomplete="off"
+                        >
+                        <div class="absolute left-3 top-3 text-gray-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <div id="skillSuggestions" class="absolute z-10 w-full bg-white border border-gray-200 rounded-lg mt-1 max-h-40 overflow-y-auto hidden shadow-lg">
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">
+                        💡 Separate multiple skills with commas
+                    </p>
+                </div>
+
+                <!-- Number of Results -->
+                <div>
+                    <label for="top_n" class="block text-sm font-semibold text-gray-700 mb-3">
+                        Number of Recommendations
+                    </label>
+                    <select 
+                        name="top_n" 
+                        id="top_n"
+                        class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-colors duration-200 text-gray-700"
+                    >
+                        <option value="5">Top 5 Jobs</option>
+                        <option value="10">Top 10 Jobs</option>
+                        <option value="15">Top 15 Jobs</option>
+                        <option value="20">Top 20 Jobs</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+                >
+                    🚀 Find My Perfect Jobs
+                </button>
+            </form>
+        </div>
+
+        <!-- Popular Skills Section -->
+        {% if popular_skills %}
+        <div class="max-w-4xl mx-auto mt-12 bg-white rounded-2xl shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                🔥 Popular Skills
+            </h2>
+            <div class="flex flex-wrap gap-2 justify-center">
+                {% for skill in popular_skills %}
+                <span 
+                    class="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium hover:from-blue-200 hover:to-indigo-200 cursor-pointer transition-colors duration-200"
+                    onclick="addSkill('{{ skill }}')"
+                >
+                    {{ skill.title() }}
+                </span>
+                {% endfor %}
+            </div>
+            <p class="text-sm text-gray-500 text-center mt-4">
+                Click on any skill to add it to your list
+            </p>
+        </div>
+        {% endif %}
+
+        <!-- Features Section -->
+        <div class="max-w-4xl mx-auto mt-12 grid md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                <div class="text-3xl mb-4">🎯</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Smart Matching</h3>
+                <p class="text-gray-600">Our algorithm analyzes your skills and matches them with job requirements</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                <div class="text-3xl mb-4">📊</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Match Percentage</h3>
+                <p class="text-gray-600">See exactly how well you match with each job opportunity</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
+                <div class="text-3xl mb-4">💡</div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Skill Gaps</h3>
+                <p class="text-gray-600">Identify which skills you need to develop for your dream job</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add skill from popular skills
+        function addSkill(skill) {
+            const skillsInput = document.getElementById('skills');
+            const currentSkills = skillsInput.value.trim();
+            
+            if (currentSkills === '') {
+                skillsInput.value = skill;
+            } else {
+                skillsInput.value = currentSkills + ', ' + skill;
+            }
+            
+            skillsInput.focus();
+        }
+
+        // Auto-suggest functionality
+        let debounceTimer;
+        const skillsInput = document.getElementById('skills');
+        const suggestions = document.getElementById('skillSuggestions');
+
+        skillsInput.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const query = this.value.split(',').pop().trim();
+                
+                if (query.length > 1) {
+                    fetch(`/api/skills?q=${encodeURIComponent(query)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            showSuggestions(data, query);
+                        });
+                } else {
+                    hideSuggestions();
+                }
+            }, 300);
+        });
+
+        function showSuggestions(skills, query) {
+            if (skills.length > 0) {
+                const html = skills.map(skill => 
+                    `<div class="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0" onclick="selectSkill('${skill}')">${skill}</div>`
+                ).join('');
+                
+                suggestions.innerHTML = html;
+                suggestions.classList.remove('hidden');
+            } else {
+                hideSuggestions();
+            }
+        }
+
+        function hideSuggestions() {
+            suggestions.classList.add('hidden');
+        }
+
+        function selectSkill(skill) {
+            const currentValue = skillsInput.value;
+            const parts = currentValue.split(',');
+            parts[parts.length - 1] = ' ' + skill;
+            skillsInput.value = parts.join(',');
+            hideSuggestions();
+            skillsInput.focus();
+        }
+
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!skillsInput.contains(event.target) && !suggestions.contains(event.target)) {
+                hideSuggestions();
+            }
+        });
+    </script>
+</body>
+</html>

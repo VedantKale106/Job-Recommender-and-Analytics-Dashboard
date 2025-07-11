@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Recommendations - Skill-Based Job Recommender</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'bounce-subtle': 'bounceSubtle 2s infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes bounceSubtle {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8 animate-fade-in">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                🎯 Job Recommendations
+            </h1>
+            <div class="max-w-4xl mx-auto">
+                <p class="text-lg text-gray-600 mb-4">
+                    Based on your skills: 
+                    <span class="font-semibold text-blue-600">{{ skills | join(", ") }}</span>
+                </p>
+                
+                <!-- Statistics Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6 animate-slide-up">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div class="bg-blue-50 rounded-lg p-4">
+                            <div class="text-2xl font-bold text-blue-600">{{ stats.total_jobs }}</div>
+                            <div class="text-sm text-gray-600">Total Jobs in Database</div>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4">
+                            <div class="text-2xl font-bold text-green-600">{{ stats.jobs_with_matches }}</div>
+                            <div class="text-sm text-gray-600">Jobs with Skill Matches</div>
+                        </div>
+                        <div class="bg-purple-50 rounded-lg p-4">
+                            <div class="text-2xl font-bold text-purple-600">{{ stats.avg_match }}%</div>
+                            <div class="text-sm text-gray-600">Average Match Score</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Recommendations -->
+        <div class="max-w-4xl mx-auto space-y-6">
+            {% for job in results %}
+            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 animate-slide-up" style="animation-delay: {{ loop.index0 * 0.1 }}s">
+                <div class="p-6">
+                    <!-- Job Header -->
+                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                        <div class="flex-1">
+                            <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-2">
+                                {{ job['Job Title'] }}
+                            </h3>
+                            <div class="flex items-center gap-4 text-sm text-gray-600">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    {{ job['Skills Matched'] }}/{{ job['Total Skills Required'] }} skills matched
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Match Percentage -->
+                        <div class="mt-4 md:mt-0 text-center">
+                            <div class="relative inline-block">
+                                {% set match_color = 'bg-red-500' if job['Match %'] < 30 else 'bg-yellow-500' if job['Match %'] < 70 else 'bg-green-500' %}
+                                <div class="w-20 h-20 rounded-full {{ match_color }} flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                                    {{ job['Match %'] }}%
+                                </div>
+                                {% if job['Match %'] >= 80 %}
+                                <div class="absolute -top-2 -right-2 text-2xl animate-bounce-subtle">🎉</div>
+                                {% endif %}
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Match Score</p>
+                        </div>
+                    </div>
+
+                    <!-- Skills Section -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Matched Skills -->
+                        <div class="bg-green-50 rounded-lg p-4">
+                            <h4 class="font-semibold text-green-800 mb-3 flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Matched Skills ({{ job['Matched Skills']|length }})
+                            </h4>
+                            <div class="flex flex-wrap gap-2">
+                                {% for skill in job['Matched Skills'] %}
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                    ✓ {{ skill.title() }}
+                                </span>
+                                {% endfor %}
+                                {% if not job['Matched Skills'] %}
+                                <span class="text-gray-500 text-sm italic">No matching skills found</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Missing Skills -->
+                        <div class="bg-orange-50 rounded-lg p-4">
+                            <h4 class="font-semibold text-orange-800 mb-3 flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                                Skills to Learn ({{ job['Missing Skills']|length }})
+                            </h4>
+                            <div class="flex flex-wrap gap-2">
+                                {% for skill in job['Missing Skills'] %}
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                                    📚 {{ skill.title() }}
+                                </span>
+                                {% endfor %}
+                                {% if not job['Missing Skills'] %}
+                                <span class="text-gray-500 text-sm italic">
+                                    🎉 You have all required skills!
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-6 flex flex-wrap gap-3">
+                        {% if job['Match %'] >= 70 %}
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center text-sm font-medium">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            Save Job
+                        </button>
+                        {% endif %}
+                        
+                        <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200 flex items-center text-sm font-medium">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                            </svg>
+                            Share
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% if not results %}
+            <div class="bg-white rounded-xl shadow-lg p-12 text-center">
+                <div class="text-6xl mb-4">🔍</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">No jobs found</h3>
+                <p class="text-gray-600 mb-6">
+                    We couldn't find any jobs matching your skills. Try adding more skills or check your spelling.
+                </p>
+                <a href="/" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 inline-flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Try Again
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="max-w-4xl mx-auto mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all duration-200 transform hover:scale-105 inline-flex items-center justify-center font-medium shadow-lg">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Search Again
+            </a>
+            
+            <button onclick="window.print()" class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-all duration-200 transform hover:scale-105 inline-flex items-center justify-center font-medium shadow-lg">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                </svg>
+                Print Results
+            </button>
+            
+            <button onclick="exportResults()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-105 inline-flex items-center justify-center font-medium shadow-lg">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                Export CSV
+            </button>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="max-w-4xl mx-auto mt-12 bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                💡 Tips to Improve Your Matches
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <h3 class="font-semibold text-blue-800 mb-2">🎯 Focus on High-Demand Skills</h3>
+                    <p class="text-blue-700 text-sm">
+                        Look at the missing skills in your top matches and prioritize learning the most common ones.
+                    </p>
+                </div>
+                <div class="bg-green-50 rounded-lg p-4">
+                    <h3 class="font-semibold text-green-800 mb-2">📚 Create a Learning Plan</h3>
+                    <p class="text-green-700 text-sm">
+                        Pick 2-3 missing skills that appear frequently and start learning them systematically.
+                    </p>
+                </div>
+                <div class="bg-purple-50 rounded-lg p-4">
+                    <h3 class="font-semibold text-purple-800 mb-2">🔄 Update Regularly</h3>
+                    <p class="text-purple-700 text-sm">
+                        As you learn new skills, update your profile to see how your job matches improve.
+                    </p>
+                </div>
+                <div class="bg-orange-50 rounded-lg p-4">
+                    <h3 class="font-semibold text-orange-800 mb-2">🎨 Diversify Your Skills</h3>
+                    <p class="text-orange-700 text-sm">
+                        Consider learning both technical and soft skills to increase your versatility.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Export results to CSV
+        function exportResults() {
+            const results = {{ results | tojson }};
+            const skills = {{ skills | tojson }};
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Job Title,Match %,Skills Matched,Total Skills Required,Matched Skills,Missing Skills\n";
+            
+            results.forEach(job => {
+                const row = [
+                    `"${job['Job Title']}"`,
+                    job['Match %'],
+                    job['Skills Matched'],
+                    job['Total Skills Required'],
+                    `"${job['Matched Skills'].join(', ')}"`,
+                    `"${job['Missing Skills'].join(', ')}"`,
+                ].join(',');
+                csvContent += row + "\n";
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `job_recommendations_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on scroll
+            const cards = document.querySelectorAll('.animate-slide-up');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+            
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
