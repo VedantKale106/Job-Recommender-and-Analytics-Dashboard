@@ -8,14 +8,15 @@ This project provides a comprehensive solution for job recommendations based on 
 
 ## Table of Contents
 
-  - [Project Overview](##project-overview)
-  - [Features](##Features)
-  - [Project Structure](https://www.google.com/search?q=%23project-structure)
-  - [Setup and Installation](https://www.google.com/search?q=%23setup-and-installation)
-  - [Usage](https://www.google.com/search?q=%23usage)
-  - [Power BI Dashboard](https://www.google.com/search?q=%23power-bi-dashboard)
-  - [Data Source](https://www.google.com/search?q=%23data-source)
-  - [Contributing](https://www.google.com/search?q=%23contributing)
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Screenshots](#screenshots)
+- [Setup and Installation](#setup-and-installation)
+- [Usage](#usage)
+- [Power BI Dashboard](#power-bi-dashboard)
+- [Data Source](#data-source)
+- [Contributing](#contributing)
 
 -----
 
