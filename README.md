@@ -68,17 +68,23 @@ This project provides a comprehensive solution for job recommendations based on 
 
 ## Screenshots
 
-<img width="1354" height="758" alt="Image" src="https://github.com/user-attachments/assets/af3ed983-d036-4eed-ab24-6d8de4280424" />
+<img width="1167" height="651" alt="Image" src="https://github.com/user-attachments/assets/2551024f-cf8a-49d9-8076-9c23eadf9c69" />
 
-<img width="1885" height="912" alt="Image" src="https://github.com/user-attachments/assets/bf7045e2-7812-41fd-8405-b376f80765d1" />
+<img width="1163" height="649" alt="Image" src="https://github.com/user-attachments/assets/891169ec-5ddc-48b5-95ee-d2b3fd3c9e82" />
 
-<img width="1888" height="912" alt="Image" src="https://github.com/user-attachments/assets/5cb42fa3-bc16-4268-ae30-db99facee638" />
+<img width="1162" height="656" alt="Image" src="https://github.com/user-attachments/assets/b95fc98d-f0f6-431e-b78a-b6eb30a29723" />
 
-<img width="1884" height="917" alt="Image" src="https://github.com/user-attachments/assets/7c6251a5-3530-42e5-ae57-b6b4cde9e321" />
+<img width="1885" height="912" alt="Image" src="https://github.com/user-attachments/assets/1d826977-f1e0-4738-b97e-cd3fa10dd3a2" />
 
-<img width="1883" height="921" alt="Image" src="https://github.com/user-attachments/assets/7753e0f2-00ed-4dfc-82c5-0dadd2e46427" />
+<img width="1888" height="912" alt="Image" src="https://github.com/user-attachments/assets/b9c0facd-1034-4e70-8bc7-3bab17525a33" />
 
-<img width="1879" height="919" alt="Image" src="https://github.com/user-attachments/assets/380a481c-aa71-4471-aaed-2feba12cc2f2" />
+<img width="1884" height="917" alt="Image" src="https://github.com/user-attachments/assets/31fb9732-affa-4e73-9c2c-db870a8d2871" />
+
+<img width="1883" height="921" alt="Image" src="https://github.com/user-attachments/assets/4f5ed201-50e2-434f-975d-f7b161881fbe" />
+
+<img width="1879" height="919" alt="Image" src="https://github.com/user-attachments/assets/e13a5d08-c796-47b3-906b-e8a66a50feea" />
+
+
 
 -----
 
